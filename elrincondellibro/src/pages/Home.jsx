@@ -6,6 +6,7 @@ import { ChevronRight, ChevronLeft } from "lucide-react"
 import ProductCard from "../components/ProductCard"
 import { fetchFeaturedProducts, fetchNewReleases, fetchBestSellers } from "../services/api"
 
+
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([])
   const [newReleases, setNewReleases] = useState([])
