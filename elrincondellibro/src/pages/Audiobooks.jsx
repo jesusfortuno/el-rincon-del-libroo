@@ -4,6 +4,8 @@ import { useState, useEffect } from "react"
 import { Filter, ChevronDown } from "lucide-react"
 import ProductCard from "../components/ProductCard"
 import { fetchAudiobooks } from "../services/api"
+import "./audiobooks.css";
+
 
 const Audiobooks = ({ addToCart }) => {
   const [audiobooks, setAudiobooks] = useState([])

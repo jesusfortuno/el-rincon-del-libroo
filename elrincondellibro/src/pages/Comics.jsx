@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Filter, ChevronDown } from "lucide-react"
 import ProductCard from "../components/ProductCard"
 import { fetchComics } from "../services/api"
+import "./comics.css";
 
 const Comics = ({ addToCart }) => {
   const [comics, setComics] = useState([])

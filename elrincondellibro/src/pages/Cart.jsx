@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft } from "lucide-react"
+import "./cart.css";
 
 const Cart = ({ cart, removeFromCart, updateQuantity }) => {
   const [couponCode, setCouponCode] = useState("")

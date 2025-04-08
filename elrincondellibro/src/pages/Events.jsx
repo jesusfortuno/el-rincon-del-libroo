@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Calendar, MapPin, Users } from "lucide-react"
+import "./events.css";
 
 const Events = () => {
   const [events, setEvents] = useState([])

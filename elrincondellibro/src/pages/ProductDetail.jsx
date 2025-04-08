@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router-dom"
 import { Star, ShoppingCart, Heart, Share2, ChevronRight } from "lucide-react"
 import { fetchProductById, fetchRelatedProducts } from "../services/api"
 import ProductCard from "../components/ProductCard"
+import "./product-detail.css";
 
 const ProductDetail = ({ addToCart }) => {
   const { id } = useParams()

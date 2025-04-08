@@ -5,6 +5,9 @@ import { Link } from "react-router-dom"
 import { ChevronRight, ChevronLeft } from "lucide-react"
 import ProductCard from "../components/ProductCard"
 import { fetchFeaturedProducts, fetchNewReleases, fetchBestSellers } from "../services/api"
+import "./home.css";
+import duneBanner from "../imagen/el-mesias-de-dune-las-cronicas-de-dune-02.jpg";
+
 
 
 const Home = () => {
@@ -39,7 +42,7 @@ const Home = () => {
       id: 1,
       title: "Descubre nuevos mundos",
       subtitle: "Explora nuestra colección de fantasía y ciencia ficción",
-      image: "/placeholder.svg?height=600&width=1200",
+      image: duneBanner,
       link: "/libros",
     },
     {
@@ -94,7 +97,7 @@ const Home = () => {
           {banners.map((banner) => (
             <div key={banner.id} className="min-w-full relative">
               <img
-                src={banner.image || "/placeholder.svg"}
+                src={banner.image || duneBanner}
                 alt={banner.title}
                 className="w-full h-[400px] md:h-[500px] object-cover"
               />

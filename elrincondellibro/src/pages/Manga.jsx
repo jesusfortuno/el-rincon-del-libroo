@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Filter, ChevronDown } from "lucide-react"
 import ProductCard from "../components/ProductCard"
 import { fetchManga } from "../services/api"
+import "./manga.css";
 
 const Manga = ({ addToCart }) => {
   const [manga, setManga] = useState([])

@@ -1,0 +1,171 @@
+/* Estilos específicos para la página de Login */
+
+/* Variables de colores */
+:root {
+    --primary: #8b4513;
+    --primary-dark: #6a340e;
+    --primary-light: #c68c53;
+    --secondary: #e6d5c0;
+    --accent: #d4a76a;
+    --text-dark: #333;
+    --text-light: #fff;
+    --gray-light: #f8f9fa;
+    --gray-medium: #e9ecef;
+    --gray-dark: #6c757d;
+  }
+  
+  /* Contenedor principal */
+  .max-w-md {
+    max-width: 28rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  /* Tarjeta de login */
+  .bg-white.rounded-lg.shadow-md {
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .bg-white.rounded-lg.shadow-md:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Título */
+  h1.text-2xl {
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  h1.text-2xl::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary);
+    opacity: 0.5;
+  }
+  
+  /* Mensaje de error */
+  .bg-red-100 {
+    border-left: 4px solid #f56565;
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20%,
+    60% {
+      transform: translateX(-5px);
+    }
+    40%,
+    80% {
+      transform: translateX(5px);
+    }
+  }
+  
+  /* Campos de formulario */
+  label.block.text-sm {
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-medium);
+    border-radius: 8px;
+    background-color: white;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+  }
+  
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.2);
+  }
+  
+  /* Enlace de recuperación de contraseña */
+  a.text-xs.text-primary {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a.text-xs.text-primary:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+  
+  /* Botón de inicio de sesión */
+  button[type="submit"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+  }
+  
+  button[type="submit"]:hover:not(:disabled) {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  button[type="submit"]:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  /* Enlace de registro */
+  .mt-6.text-center {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--gray-medium);
+  }
+  
+  .text-sm.text-gray-600 a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .text-sm.text-gray-600 a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+  
+  /* Ajustes responsivos */
+  @media (max-width: 640px) {
+    .max-w-md {
+      padding: 0 1rem;
+    }
+  
+    .bg-white.rounded-lg.shadow-md {
+      padding: 1.5rem;
+    }
+  }
+  

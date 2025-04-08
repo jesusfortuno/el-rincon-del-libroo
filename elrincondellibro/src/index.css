@@ -1,41 +1,131 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --primary: #8b4513;
+  --primary-dark: #6a340e;
+  --primary-light: #c68c53;
+  --secondary: #e6d5c0;
+  --accent: #d4a76a;
+  --text-dark: #333;
+  --text-light: #fff;
+  --gray-light: #f8f9fa;
+  --gray-medium: #e9ecef;
+  --gray-dark: #6c757d;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color-scheme: light;
+  color: var(--text-dark);
   background-color: #ffffff;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-a:hover {
-  color: #535bf2;
+
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
 }
 
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  flex-direction: column;
+}
+
+/* Estilos para el header */
+header {
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
   width: 100%;
-  height: 100%;
- 
+  height: auto;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+header h1 {
+  font-size: 1.5rem;
+  color: var(--primary);
+  margin: 0;
+  font-weight: 700;
 }
 
+nav {
+  display: flex;
+  gap: 1.5rem;
+  height: auto;
+}
+
+nav a {
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: var(--primary);
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary);
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+/* Estilos para los iconos del header */
+.header-icons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.header-icons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+
+.header-icons button:hover {
+  color: var(--primary);
+}
+
+/* Estilos generales para enlaces */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-dark);
+}
+
+/* Estilos para botones */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -43,27 +133,116 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--primary);
+  color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.3s ease;
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: var(--primary-dark);
 }
+
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Estilos para el contenedor principal */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Estilos para el footer */
+footer {
+  background-color: #2c3e50;
+  color: white;
+  padding: 2rem;
+  margin-top: auto;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 0.75rem;
+  }
+
+  nav {
+    margin-top: 0.75rem;
+    width: 100%;
+    justify-content: space-between;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+
+  .header-icons {
+    margin-top: 0.75rem;
+  }
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: var(--text-dark);
     background-color: #ffffff;
   }
-  a:hover {
-    color: #747bff;
-  }
+
   button {
-    background-color: #f9f9f9;
+    background-color: var(--primary);
   }
+}
+
+/* Correcciones específicas para el carrusel */
+.min-w-full.relative {
+  height: 350px !important;
+}
+
+.min-w-full.relative img {
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Correcciones para los botones de "Explorar" */
+a[to*="/libros"],
+a[to*="/manga"],
+a[to*="/ofertas"] {
+  display: inline-block !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Correcciones para los botones de navegación del carrusel */
+button.absolute {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* Correcciones para las tarjetas de productos */
+.grid > div {
+  height: auto !important;
+}
+
+.grid > div img {
+  height: 220px !important;
+}
+
+.grid > div button {
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Correcciones para el formulario de newsletter */
+.bg-primary.text-white input,
+.bg-primary.text-white button {
+  height: auto !important;
+}
+
+/* Correcciones para el footer */
+footer * {
+  height: auto !important;
 }
