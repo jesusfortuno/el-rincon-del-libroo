@@ -1,160 +1,95 @@
-/* Variables */
-:root {
-    --primary-color: #8b4513;
-    --primary-hover: #a0522d;
-    --secondary-color: #f5f5dc;
-    --text-dark: #333333;
-    --text-light: #ffffff;
-  }
-  
-*{
-    margin: 0%;
-    padding: 0;
-    box-sizing: border-box;
+.footer {
+  background-color: #2d3748;
+  background-image: linear-gradient(to bottom, #2d3748, #1a202c);
+  color: white;
+  border-top: 4px solid var(--primary);
+  margin-top: 3rem;
 }
-  /* Footer */
-  .footer {
-    background-color: #2d3748;
-    background-image: linear-gradient(to bottom, #2d3748, #1a202c);
-    color: white;
-    border-top: 4px solid var(--primary-color);
-  }
-  
-  .footer-container {
-    max-width: 80rem;
-    margin: 0 auto;
-    padding: 3rem 1rem;
-  }
-  
-  @media (min-width: 640px) {
-    .footer-container {
-      padding: 3rem 1.5rem;
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .footer-container {
-      padding: 3rem 2rem;
-    }
-  }
-  
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  
-  @media (min-width: 768px) {
-    .footer-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-  
-  .footer-column {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .footer-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    position: relative;
-    padding-bottom: 10px;
-  }
-  
-  .footer-title::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 40px;
-    height: 2px;
-    background-color: var(--primary-color);
-  }
-  
-  .footer-description {
-    color: #cbd5e0;
-    margin-bottom: 1rem;
-  }
-  
-  .social-links {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .social-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #cbd5e0;
-    transition: all 0.3s ease;
-  }
-  
-  .social-link:hover {
-    background-color: var(--primary-color);
-    color: white;
-    transform: translateY(-3px);
-  }
-  
-  .footer-links {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .footer-link {
-    color: #cbd5e0;
-    transition: color 0.2s ease, transform 0.2s ease;
-  }
-  
-  .footer-link:hover {
-    color: white;
-    transform: translateX(3px);
-  }
-  
-  .contact-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .contact-icon {
-    color: #cbd5e0;
-  }
-  
-  .contact-text {
-    color: #cbd5e0;
-  }
-  
-  .copyright {
-    border-top: 1px solid #4a5568;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    text-align: center;
-    color: #cbd5e0;
-    position: relative;
-  }
-  
-  .copyright::before {
-    content: "📚";
-    position: absolute;
-    top: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #1a202c;
-    padding: 0 10px;
-    font-size: 20px;
-  }
-  
-  
+
+.footer-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12;
+}
+
+.footer-grid {
+  @apply grid gap-8 md:gap-12;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.footer-column {
+  @apply flex flex-col space-y-4;
+}
+
+.footer-title {
+  @apply text-lg font-bold mb-4 pb-2 relative;
+  color: white;
+}
+
+.footer-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--primary);
+}
+
+.footer-description {
+  @apply text-gray-300 mb-4 leading-relaxed;
+}
+
+.social-links {
+  @apply flex gap-3;
+}
+
+.social-link {
+  @apply flex items-center justify-center w-10 h-10 rounded-full bg-gray-700 text-gray-300 transition-all duration-200;
+}
+
+.social-link:hover {
+  @apply bg-primary text-white transform -translate-y-1;
+}
+
+.footer-links {
+  @apply flex flex-col space-y-2;
+}
+
+.footer-link {
+  @apply text-gray-300 transition-all duration-200 py-1;
+}
+
+.footer-link:hover {
+  @apply text-white transform translate-x-1;
+}
+
+.contact-list {
+  @apply flex flex-col space-y-3;
+}
+
+.contact-item {
+  @apply flex items-start gap-3;
+}
+
+.contact-icon {
+  @apply mt-1 text-gray-400 flex-shrink-0;
+}
+
+.contact-text {
+  @apply text-gray-300;
+}
+
+.copyright {
+  @apply mt-12 pt-6 text-center text-gray-400 relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.copyright::before {
+  content: "📚";
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #1a202c;
+  padding: 0 10px;
+  font-size: 20px;
+}

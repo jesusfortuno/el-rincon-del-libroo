@@ -1,14 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
-import { ChevronRight, ChevronLeft } from "lucide-react"
+import { ChevronRight, ChevronLeft, ArrowRight } from "lucide-react"
 import ProductCard from "../components/ProductCard"
 import { fetchFeaturedProducts, fetchNewReleases, fetchBestSellers } from "../services/api"
-import "./home.css";
-import duneBanner from "../imagen/el-mesias-de-dune-las-cronicas-de-dune-02.jpg";
-
-
+import "./home.css"
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([])
@@ -16,33 +13,15 @@ const Home = () => {
   const [bestSellers, setBestSellers] = useState([])
   const [currentSlide, setCurrentSlide] = useState(0)
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const featured = await fetchFeaturedProducts()
-        const newBooks = await fetchNewReleases()
-        const popular = await fetchBestSellers()
-
-        setFeaturedProducts(featured)
-        setNewReleases(newBooks)
-        setBestSellers(popular)
-        setLoading(false)
-      } catch (error) {
-        console.error("Error loading home data:", error)
-        setLoading(false)
-      }
-    }
-
-    loadData()
-  }, [])
+  const [touchStart, setTouchStart] = useState(0)
+  const carouselRef = useRef(null)
 
   const banners = [
     {
       id: 1,
       title: "Descubre nuevos mundos",
       subtitle: "Explora nuestra colección de fantasía y ciencia ficción",
-      image: duneBanner,
+      image: "/placeholder.svg?height=600&width=1200",
       link: "/libros",
     },
     {
@@ -61,15 +40,28 @@ const Home = () => {
     },
   ]
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === banners.length - 1 ? 0 : prev + 1))
-  }
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [featured, newBooks, popular] = await Promise.all([
+          fetchFeaturedProducts(),
+          fetchNewReleases(),
+          fetchBestSellers(),
+        ])
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? banners.length - 1 : prev - 1))
-  }
+        setFeaturedProducts(featured)
+        setNewReleases(newBooks)
+        setBestSellers(popular)
+        setLoading(false)
+      } catch (error) {
+        console.error("Error loading home data:", error)
+        setLoading(false)
+      }
+    }
 
-  // Auto slide
+    loadData()
+  }, [])
+
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide()
@@ -78,10 +70,33 @@ const Home = () => {
     return () => clearInterval(interval)
   }, [currentSlide])
 
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev === banners.length - 1 ? 0 : prev + 1))
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev === 0 ? banners.length - 1 : prev - 1))
+  }
+
+  const handleTouchStart = (e) => {
+    setTouchStart(e.touches[0].clientX)
+  }
+
+  const handleTouchEnd = (e) => {
+    const touchEnd = e.changedTouches[0].clientX
+    const diff = touchStart - touchEnd
+
+    if (diff > 50) {
+      nextSlide()
+    } else if (diff < -50) {
+      prevSlide()
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <div className="spinner" aria-label="Cargando..."></div>
       </div>
     )
   }
@@ -89,26 +104,16 @@ const Home = () => {
   return (
     <div className="bg-gray-50">
       {/* Hero Banner Carousel */}
-      <div className="relative overflow-hidden">
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-        >
+      <div className="carousel-container" ref={carouselRef} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+        <div className="carousel-slides" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
           {banners.map((banner) => (
-            <div key={banner.id} className="min-w-full relative">
-              <img
-                src={banner.image || duneBanner}
-                alt={banner.title}
-                className="w-full h-[400px] md:h-[500px] object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <div className="text-center text-white px-4">
-                  <h1 className="text-3xl md:text-5xl font-bold mb-2">{banner.title}</h1>
-                  <p className="text-lg md:text-xl mb-6">{banner.subtitle}</p>
-                  <Link
-                    to={banner.link}
-                    className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-full transition-colors"
-                  >
+            <div key={banner.id} className="carousel-slide">
+              <img src={banner.image || "/placeholder.svg"} alt={banner.title} className="carousel-image" />
+              <div className="carousel-overlay">
+                <div className="carousel-content">
+                  <h1 className="carousel-title">{banner.title}</h1>
+                  <p className="carousel-subtitle">{banner.subtitle}</p>
+                  <Link to={banner.link} className="btn btn-primary mt-4">
                     Explorar
                   </Link>
                 </div>
@@ -117,41 +122,36 @@ const Home = () => {
           ))}
         </div>
 
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
-        >
+        <button onClick={prevSlide} className="carousel-button carousel-button-prev" aria-label="Anterior">
           <ChevronLeft size={24} />
         </button>
 
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
-        >
+        <button onClick={nextSlide} className="carousel-button carousel-button-next" aria-label="Siguiente">
           <ChevronRight size={24} />
         </button>
 
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+        <div className="carousel-indicators">
           {banners.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full ${currentSlide === index ? "bg-white" : "bg-white bg-opacity-50"}`}
+              className={`carousel-indicator ${currentSlide === index ? "active" : ""}`}
+              aria-label={`Ir a la diapositiva ${index + 1}`}
             />
           ))}
         </div>
       </div>
 
       {/* Featured Products */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Destacados</h2>
-          <Link to="/destacados" className="text-primary hover:underline flex items-center">
-            Ver todos <ChevronRight size={16} />
+      <section className="container py-12">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="section-title">Destacados</h2>
+          <Link to="/destacados" className="text-primary hover:text-primary-dark flex items-center gap-1">
+            Ver todos <ArrowRight size={16} />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredProducts.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} addToCart={() => {}} />
           ))}
@@ -160,15 +160,15 @@ const Home = () => {
 
       {/* New Releases */}
       <section className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Novedades</h2>
-            <Link to="/novedades" className="text-primary hover:underline flex items-center">
-              Ver todas <ChevronRight size={16} />
+        <div className="container">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="section-title">Novedades</h2>
+            <Link to="/novedades" className="text-primary hover:text-primary-dark flex items-center gap-1">
+              Ver todas <ArrowRight size={16} />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {newReleases.slice(0, 4).map((product) => (
               <ProductCard key={product.id} product={product} addToCart={() => {}} />
             ))}
@@ -177,15 +177,15 @@ const Home = () => {
       </section>
 
       {/* Best Sellers */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Los más vendidos</h2>
-          <Link to="/mas-vendidos" className="text-primary hover:underline flex items-center">
-            Ver todos <ChevronRight size={16} />
+      <section className="container py-12">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="section-title">Los más vendidos</h2>
+          <Link to="/mas-vendidos" className="text-primary hover:text-primary-dark flex items-center gap-1">
+            Ver todos <ArrowRight size={16} />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {bestSellers.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} addToCart={() => {}} />
           ))}
@@ -193,23 +193,18 @@ const Home = () => {
       </section>
 
       {/* Newsletter */}
-      <section className="bg-primary text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold mb-4">Suscríbete a nuestra newsletter</h2>
-            <p className="mb-6">Recibe las últimas novedades, ofertas exclusivas y recomendaciones personalizadas.</p>
+      <section className="newsletter-section">
+        <div className="container">
+          <div className="newsletter-container">
+            <h2 className="newsletter-title">Suscríbete a nuestra newsletter</h2>
+            <p className="newsletter-description">
+              Recibe las últimas novedades, ofertas exclusivas y recomendaciones personalizadas directamente en tu
+              email.
+            </p>
 
-            <form className="flex flex-col sm:flex-row gap-2 justify-center">
-              <input
-                type="email"
-                placeholder="Tu correo electrónico"
-                className="px-4 py-2 rounded-md text-gray-800 w-full sm:w-auto"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-white text-primary font-semibold px-6 py-2 rounded-md hover:bg-gray-100 transition-colors"
-              >
+            <form className="newsletter-form">
+              <input type="email" placeholder="Tu correo electrónico" className="newsletter-input" required />
+              <button type="submit" className="newsletter-button">
                 Suscribirse
               </button>
             </form>
@@ -221,4 +216,3 @@ const Home = () => {
 }
 
 export default Home
-
