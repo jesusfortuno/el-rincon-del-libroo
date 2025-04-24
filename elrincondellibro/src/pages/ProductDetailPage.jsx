@@ -83,12 +83,12 @@ const ProductDetailPage = () => {
     discount,
     description,
     publisher,
-    publishDate,
+    publish_date: publishDate,
     pages,
     isbn,
     language,
     rating,
-    reviewCount,
+    review_count: reviewCount,
     stock,
   } = product
 

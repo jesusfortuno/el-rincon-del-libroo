@@ -6,9 +6,23 @@ import { useCart } from "../contexts/CartContext"
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart()
-  const { id, title, author, cover, price, discount, rating, reviewCount } = product
 
-  const finalPrice = discount ? (price - (price * discount) / 100).toFixed(2) : price.toFixed(2)
+  // Verificar si el producto existe
+  if (!product) {
+    return <div className="p-4 border rounded-lg bg-gray-100">Producto no disponible</div>
+  }
+
+  const { id, title, author, cover, price, discount, rating, review_count } = product
+
+  // Valores por defecto para evitar errores
+  const safeTitle = title || "Título no disponible"
+  const safeAuthor = author || "Autor desconocido"
+  const safePrice = price || 0
+  const safeDiscount = discount || 0
+  const safeRating = rating || 0
+  const safeReviewCount = review_count || 0
+
+  const finalPrice = safeDiscount ? (safePrice - (safePrice * safeDiscount) / 100).toFixed(2) : safePrice.toFixed(2)
 
   const handleAddToCart = (e) => {
     e.preventDefault()
@@ -19,10 +33,18 @@ const ProductCard = ({ product }) => {
     <div className="product-card">
       <div className="product-image-container">
         <Link to={`/producto/${id}`} className="product-image-link">
-          <img src={cover || "/placeholder.svg?height=400&width=300"} alt={title} className="product-image" />
+          <img
+            src={cover || "/placeholder.svg?height=400&width=300"}
+            alt={safeTitle}
+            className="product-image"
+            onError={(e) => {
+              e.target.onerror = null
+              e.target.src = "/placeholder.svg?height=400&width=300"
+            }}
+          />
         </Link>
 
-        {discount > 0 && <div className="product-badge">-{discount}%</div>}
+        {safeDiscount > 0 && <div className="product-badge">-{safeDiscount}%</div>}
 
         <div className="product-actions">
           <button className="product-action-btn wishlist-btn" aria-label="Add to wishlist">
@@ -36,10 +58,10 @@ const ProductCard = ({ product }) => {
 
       <div className="product-info">
         <Link to={`/producto/${id}`} className="product-title-link">
-          <h3 className="product-title">{title}</h3>
+          <h3 className="product-title">{safeTitle}</h3>
         </Link>
 
-        <p className="product-author">{author}</p>
+        <p className="product-author">{safeAuthor}</p>
 
         <div className="product-rating">
           <div className="rating-stars">
@@ -47,32 +69,32 @@ const ProductCard = ({ product }) => {
               <Star
                 key={i}
                 size={14}
-                className={i < Math.floor(rating) ? "star-filled" : "star-empty"}
-                fill={i < Math.floor(rating) ? "currentColor" : "none"}
+                className={i < Math.floor(safeRating) ? "star-filled" : "star-empty"}
+                fill={i < Math.floor(safeRating) ? "currentColor" : "none"}
               />
             ))}
           </div>
-          <span className="rating-count">({reviewCount})</span>
+          <span className="rating-count">({safeReviewCount})</span>
         </div>
 
         <div className="product-price">
           <span className="current-price">{finalPrice}€</span>
-          {discount > 0 && <span className="original-price">{price.toFixed(2)}€</span>}
+          {safeDiscount > 0 && <span className="original-price">{safePrice.toFixed(2)}€</span>}
         </div>
       </div>
 
       <style jsx>{`
         .product-card {
-          background-color: var(--color-white);
-          border-radius: var(--radius-lg);
+          background-color: white;
+          border-radius: 0.5rem;
           overflow: hidden;
-          box-shadow: var(--shadow-sm);
-          transition: all var(--transition-normal) ease;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          transition: all 0.3s ease;
         }
         
         .product-card:hover {
           transform: translateY(-5px);
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         .product-image-container {
@@ -90,7 +112,7 @@ const ProductCard = ({ product }) => {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          transition: transform var(--transition-normal) ease;
+          transition: transform 0.3s ease;
         }
         
         .product-card:hover .product-image {
@@ -99,27 +121,27 @@ const ProductCard = ({ product }) => {
         
         .product-badge {
           position: absolute;
-          top: var(--spacing-3);
-          right: var(--spacing-3);
-          background-color: var(--color-danger);
+          top: 0.75rem;
+          right: 0.75rem;
+          background-color: #f44336;
           color: white;
           font-size: 0.75rem;
           font-weight: 600;
-          padding: var(--spacing-1) var(--spacing-2);
-          border-radius: var(--radius-full);
+          padding: 0.25rem 0.5rem;
+          border-radius: 9999px;
           z-index: 1;
         }
         
         .product-actions {
           position: absolute;
-          top: var(--spacing-3);
-          left: var(--spacing-3);
+          top: 0.75rem;
+          left: 0.75rem;
           display: flex;
           flex-direction: column;
-          gap: var(--spacing-2);
+          gap: 0.5rem;
           opacity: 0;
           transform: translateX(-10px);
-          transition: all var(--transition-normal) ease;
+          transition: all 0.3s ease;
         }
         
         .product-card:hover .product-actions {
@@ -135,27 +157,27 @@ const ProductCard = ({ product }) => {
           height: 36px;
           border-radius: 50%;
           background-color: white;
-          color: var(--color-gray-800);
+          color: #2d2218;
           border: none;
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           cursor: pointer;
-          transition: all var(--transition-normal) ease;
+          transition: all 0.3s ease;
         }
         
         .product-action-btn:hover {
-          background-color: var(--color-primary);
+          background-color: #8c5e58;
           color: white;
         }
         
         .product-info {
-          padding: var(--spacing-4);
+          padding: 1rem;
         }
         
         .product-title {
           font-size: 1rem;
           font-weight: 600;
-          margin-bottom: var(--spacing-1);
-          color: var(--color-text-primary);
+          margin-bottom: 0.25rem;
+          color: #2d2218;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
@@ -166,29 +188,29 @@ const ProductCard = ({ product }) => {
         
         .product-author {
           font-size: 0.875rem;
-          color: var(--color-text-secondary);
-          margin-bottom: var(--spacing-2);
+          color: #6b5d51;
+          margin-bottom: 0.5rem;
         }
         
         .product-rating {
           display: flex;
           align-items: center;
-          margin-bottom: var(--spacing-2);
+          margin-bottom: 0.5rem;
         }
         
         .rating-stars {
           display: flex;
-          color: var(--color-warning);
+          color: #f6ad55;
         }
         
         .star-empty {
-          color: var(--color-gray-300);
+          color: #d5c7bc;
         }
         
         .rating-count {
-          margin-left: var(--spacing-1);
+          margin-left: 0.25rem;
           font-size: 0.75rem;
-          color: var(--color-text-tertiary);
+          color: #8c7b6d;
         }
         
         .product-price {
@@ -199,13 +221,13 @@ const ProductCard = ({ product }) => {
         .current-price {
           font-size: 1.125rem;
           font-weight: 700;
-          color: var(--color-primary);
+          color: #8c5e58;
         }
         
         .original-price {
-          margin-left: var(--spacing-2);
+          margin-left: 0.5rem;
           font-size: 0.875rem;
-          color: var(--color-text-tertiary);
+          color: #8c7b6d;
           text-decoration: line-through;
         }
       `}</style>
