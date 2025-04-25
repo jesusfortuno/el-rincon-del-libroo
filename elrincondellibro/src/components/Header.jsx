@@ -53,9 +53,9 @@ const Header = () => {
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
-            <Link to="/" className="logo-wrapper">
+            <div className="logo-wrapper">
               <Logo />
-            </Link>
+            </div>
           </div>
 
           <nav className={`main-nav ${isMenuOpen ? "open" : ""}`}>

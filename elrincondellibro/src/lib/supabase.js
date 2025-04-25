@@ -12,14 +12,20 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.log("VITE_SUPABASE_ANON_KEY=tu_clave_anon_de_supabase")
 }
 
-// Crear el cliente de Supabase
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Crear el cliente de Supabase con valores predeterminados si no están definidos
+export const supabase = createClient(
+  supabaseUrl || "https://example.supabase.co",
+  supabaseAnonKey || "fallback-key-for-development",
+)
 
 // Función para verificar la conexión
 export const checkSupabaseConnection = async () => {
   try {
     const { data, error } = await supabase.from("products").select("count").limit(1)
-    if (error) throw error
+    if (error) {
+      console.error("❌ Error de conexión a Supabase:", error)
+      return false
+    }
     console.log("✅ Conexión a Supabase exitosa")
     return true
   } catch (error) {

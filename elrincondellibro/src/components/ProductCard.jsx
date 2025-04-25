@@ -29,12 +29,15 @@ const ProductCard = ({ product }) => {
     addToCart(product)
   }
 
+  // Determine image source with fallback
+  const imageSrc = cover || "/placeholder.svg?height=400&width=300"
+
   return (
     <div className="product-card">
       <div className="product-image-container">
         <Link to={`/producto/${id}`} className="product-image-link">
           <img
-            src={cover || "/placeholder.svg?height=400&width=300"}
+            src={imageSrc || "/placeholder.svg"}
             alt={safeTitle}
             className="product-image"
             onError={(e) => {

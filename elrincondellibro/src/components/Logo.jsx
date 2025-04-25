@@ -4,14 +4,15 @@ import { Link } from "react-router-dom"
 
 const Logo = () => {
   return (
-    <Link to="/" className="logo">
-      <span className="logo-text">El Rincón del Libro</span>
+    <div className="logo">
+      <Link to="/" className="logo-text">
+        El Rincón del Libro
+      </Link>
 
       <style jsx>{`
         .logo {
           display: flex;
           align-items: center;
-          text-decoration: none;
         }
         
         .logo-text {
@@ -19,9 +20,10 @@ const Logo = () => {
           font-size: 1.5rem;
           font-weight: 700;
           color: var(--color-primary);
+          text-decoration: none;
         }
       `}</style>
-    </Link>
+    </div>
   )
 }
 
