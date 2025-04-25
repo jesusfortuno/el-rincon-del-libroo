@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Menu, X, Search, ShoppingBag, User, Sun, Moon } from "lucide-react"
 import { useCart } from "../contexts/CartContext"
 import { useTheme } from "../contexts/ThemeContext"
@@ -15,6 +15,7 @@ const Header = () => {
   const { cartItemsCount } = useCart()
   const { darkMode, toggleTheme } = useTheme()
   const location = useLocation()
+  const navigate = useNavigate()
 
   // Close menu when route changes
   useEffect(() => {
@@ -34,14 +35,15 @@ const Header = () => {
   // Handle search form submission
   const handleSearchSubmit = (e) => {
     e.preventDefault()
-    // Implement search functionality
-    console.log("Searching for:", searchQuery)
-    setIsSearchOpen(false)
-    setSearchQuery("")
+    if (searchQuery.trim()) {
+      navigate(`/buscar?q=${encodeURIComponent(searchQuery.trim())}`)
+      setIsSearchOpen(false)
+      setSearchQuery("")
+    }
   }
 
   return (
-    <header className={`site-header ${isScrolled ? "scrolled" : ""}`}>
+    <header className={`site-header ${isScrolled ? "scrolled" : ""} ${darkMode ? "dark" : ""}`}>
       <div className="container">
         <div className="header-inner">
           <div className="header-left">
@@ -99,7 +101,7 @@ const Header = () => {
             </button>
 
             <button
-              className="btn-icon"
+              className="btn-icon theme-toggle"
               onClick={toggleTheme}
               aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
             >
@@ -148,6 +150,11 @@ const Header = () => {
         
         .site-header.scrolled {
           box-shadow: var(--shadow-md);
+        }
+        
+        .site-header.dark {
+          background-color: var(--color-bg-primary);
+          color: var(--color-text-primary);
         }
         
         .header-inner {
@@ -270,6 +277,33 @@ const Header = () => {
           gap: var(--spacing-2);
         }
         
+        .btn-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          background: none;
+          color: var(--color-text-primary);
+          border: none;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: all var(--transition-normal) ease;
+        }
+        
+        .btn-icon:hover {
+          background-color: var(--color-bg-secondary);
+          color: var(--color-primary);
+        }
+        
+        .theme-toggle {
+          color: var(--color-text-primary);
+        }
+        
+        .theme-toggle:hover {
+          color: var(--color-primary);
+        }
+        
         .cart-icon {
           position: relative;
         }
@@ -308,6 +342,8 @@ const Header = () => {
           border-right: none;
           border-radius: var(--radius-md) 0 0 var(--radius-md);
           font-size: 1rem;
+          background-color: var(--color-bg-primary);
+          color: var(--color-text-primary);
         }
         
         .search-input:focus {

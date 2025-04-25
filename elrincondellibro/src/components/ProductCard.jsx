@@ -3,13 +3,17 @@
 import { Link } from "react-router-dom"
 import { ShoppingBag, Heart, Star } from "lucide-react"
 import { useCart } from "../contexts/CartContext"
+import { useTheme } from "../contexts/ThemeContext"
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart()
+  const { darkMode } = useTheme()
 
   // Verificar si el producto existe
   if (!product) {
-    return <div className="p-4 border rounded-lg bg-gray-100">Producto no disponible</div>
+    return (
+      <div className={`p-4 border rounded-lg ${darkMode ? "bg-gray-800" : "bg-gray-100"}`}>Producto no disponible</div>
+    )
   }
 
   const { id, title, author, cover, price, discount, rating, review_count } = product
@@ -33,7 +37,7 @@ const ProductCard = ({ product }) => {
   const imageSrc = cover || "/placeholder.svg?height=400&width=300"
 
   return (
-    <div className="product-card">
+    <div className={`product-card ${darkMode ? "dark" : ""}`}>
       <div className="product-image-container">
         <Link to={`/producto/${id}`} className="product-image-link">
           <img
@@ -88,16 +92,16 @@ const ProductCard = ({ product }) => {
 
       <style jsx>{`
         .product-card {
-          background-color: white;
+          background-color: var(--color-bg-primary);
           border-radius: 0.5rem;
           overflow: hidden;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--shadow-sm);
           transition: all 0.3s ease;
         }
         
         .product-card:hover {
           transform: translateY(-5px);
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--shadow-md);
         }
         
         .product-image-container {
@@ -126,7 +130,7 @@ const ProductCard = ({ product }) => {
           position: absolute;
           top: 0.75rem;
           right: 0.75rem;
-          background-color: #f44336;
+          background-color: var(--color-danger);
           color: white;
           font-size: 0.75rem;
           font-weight: 600;
@@ -159,16 +163,16 @@ const ProductCard = ({ product }) => {
           width: 36px;
           height: 36px;
           border-radius: 50%;
-          background-color: white;
-          color: #2d2218;
+          background-color: var(--color-bg-primary);
+          color: var(--color-text-primary);
           border: none;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--shadow-md);
           cursor: pointer;
           transition: all 0.3s ease;
         }
         
         .product-action-btn:hover {
-          background-color: #8c5e58;
+          background-color: var(--color-primary);
           color: white;
         }
         
@@ -180,7 +184,7 @@ const ProductCard = ({ product }) => {
           font-size: 1rem;
           font-weight: 600;
           margin-bottom: 0.25rem;
-          color: #2d2218;
+          color: var(--color-text-primary);
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
@@ -191,7 +195,7 @@ const ProductCard = ({ product }) => {
         
         .product-author {
           font-size: 0.875rem;
-          color: #6b5d51;
+          color: var(--color-text-secondary);
           margin-bottom: 0.5rem;
         }
         
@@ -203,17 +207,17 @@ const ProductCard = ({ product }) => {
         
         .rating-stars {
           display: flex;
-          color: #f6ad55;
+          color: var(--color-warning);
         }
         
         .star-empty {
-          color: #d5c7bc;
+          color: var(--color-gray-300);
         }
         
         .rating-count {
           margin-left: 0.25rem;
           font-size: 0.75rem;
-          color: #8c7b6d;
+          color: var(--color-text-tertiary);
         }
         
         .product-price {
@@ -224,13 +228,13 @@ const ProductCard = ({ product }) => {
         .current-price {
           font-size: 1.125rem;
           font-weight: 700;
-          color: #8c5e58;
+          color: var(--color-primary);
         }
         
         .original-price {
           margin-left: 0.5rem;
           font-size: 0.875rem;
-          color: #8c7b6d;
+          color: var(--color-text-tertiary);
           text-decoration: line-through;
         }
       `}</style>

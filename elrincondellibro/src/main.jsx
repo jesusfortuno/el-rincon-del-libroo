@@ -2,6 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App.jsx"
 import "./styles/index.css"
+import "./styles/theme.css" // Importar los estilos del tema
 
 // Mostrar información de las variables de entorno (sin revelar valores completos)
 console.log("Variables de entorno:")

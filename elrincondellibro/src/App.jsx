@@ -17,6 +17,7 @@ import CartPage from "./pages/CartPage"
 import CheckoutPage from "./pages/CheckoutPage"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
+import SearchPage from "./pages/SearchPage"
 import NotFoundPage from "./pages/NotFoundPage"
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="registro" element={<RegisterPage />} />
+              <Route path="buscar" element={<SearchPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>

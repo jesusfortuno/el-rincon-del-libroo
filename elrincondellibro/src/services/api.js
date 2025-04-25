@@ -344,7 +344,8 @@ export const searchProducts = async (query) => {
     const { data, error } = await supabase
       .from("products")
       .select("*")
-      .or(`title.ilike.%${query}%,author.ilike.%${query}%`)
+      .or(`title.ilike.%${query}%,author.ilike.%${query}%,description.ilike.%${query}%`)
+      .order("created_at", { ascending: false })
 
     if (error) throw error
     return data || []
