@@ -34,7 +34,7 @@ const ProductCard = ({ product }) => {
   }
 
   // Determine image source with fallback
-  const imageSrc = cover || "/placeholder.svg?height=400&width=300"
+  const imageSrc = product.imageSrc || product.cover || "/placeholder.svg?height=400&width=300"
 
   return (
     <div className={`product-card ${darkMode ? "dark" : ""}`}>

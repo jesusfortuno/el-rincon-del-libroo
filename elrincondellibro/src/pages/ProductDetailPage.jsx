@@ -90,6 +90,7 @@ const ProductDetailPage = () => {
     rating,
     review_count: reviewCount,
     stock,
+    imageSrc,
   } = product
 
   const finalPrice = discount ? (price - (price * discount) / 100).toFixed(2) : price.toFixed(2)
@@ -112,7 +113,11 @@ const ProductDetailPage = () => {
 
         <div className="product-main">
           <div className="product-image">
-            <img src={cover || "/placeholder.svg?height=400&width=300"} alt={title} className="main-image" />
+            <img
+              src={product.imageSrc || product.cover || "/placeholder.svg?height=400&width=300"}
+              alt={title}
+              className="main-image"
+            />
           </div>
 
           <div className="product-info">
